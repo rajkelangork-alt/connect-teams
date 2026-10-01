@@ -1,0 +1,108 @@
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuth } from '../../context/AuthContext';
+import { useTheme } from '../../context/ThemeContext';
+
+export default function LoginPage() {
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [error, setError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const { login } = useAuth();
+  const { isDark, toggleTheme } = useTheme();
+  const navigate = useNavigate();
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setError('');
+    setIsSubmitting(true);
+    try {
+      await login(email, password);
+      navigate('/');
+    } catch (err) {
+      setError(err.response?.data?.detail || 'Authentication failed. Please check your credentials.');
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
+
+  return (
+    <div className="min-h-screen flex flex-col justify-center items-center px-4 bg-stone-50 dark:bg-[#0F0F11] transition-colors duration-200">
+      <button
+        type="button"
+        onClick={toggleTheme}
+        className="absolute top-6 right-6 text-xs text-stone-500 hover:text-stone-800 dark:text-stone-400 dark:hover:text-stone-200 uppercase tracking-widest transition-colors"
+      >
+        {isDark ? 'Light' : 'Dark'}
+      </button>
+
+      <div className="w-full max-w-sm">
+        <div className="mb-8 text-center">
+          <div className="inline-flex items-center justify-center w-10 h-10 rounded-lg bg-stone-900 text-stone-100 dark:bg-stone-100 dark:text-stone-900 font-semibold mb-3">
+            C
+          </div>
+          <h1 className="text-xl font-medium tracking-tight text-stone-900 dark:text-stone-100">
+            Connect Teams
+          </h1>
+          <p className="text-xs text-stone-500 dark:text-stone-400 mt-1">
+            Sign in to your collaboration workspace
+          </p>
+        </div>
+
+        <div className="bg-[#FAF9F6] dark:bg-[#18181B] border border-stone-200 dark:border-stone-800 rounded-xl p-6 shadow-sm">
+          {error && (
+            <div className="mb-4 text-xs py-2 px-3 bg-red-50 dark:bg-red-950/40 text-red-700 dark:text-red-300 border border-red-200 dark:border-red-900/50 rounded-md">
+              {error}
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} className="space-y-4">
+            <div>
+              <label className="block text-xs font-medium text-stone-600 dark:text-stone-300 mb-1.5">
+                Email Address
+              </label>
+              <input
+                type="email"
+                required
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="alex@example.com"
+                className="w-full text-sm px-3 py-2 bg-white dark:bg-[#202023] border border-stone-300 dark:border-stone-700 rounded-md text-stone-900 dark:text-stone-100 placeholder-stone-400 focus:outline-none focus:ring-1 focus:ring-stone-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-xs font-medium text-stone-600 dark:text-stone-300 mb-1.5">
+                Password
+              </label>
+              <input
+                type="password"
+                required
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="••••••••••••"
+                className="w-full text-sm px-3 py-2 bg-white dark:bg-[#202023] border border-stone-300 dark:border-stone-700 rounded-md text-stone-900 dark:text-stone-100 placeholder-stone-400 focus:outline-none focus:ring-1 focus:ring-stone-500"
+              />
+            </div>
+
+            <button
+              type="submit"
+              disabled={isSubmitting}
+              className="w-full py-2 px-4 rounded-md text-sm font-medium bg-stone-900 hover:bg-stone-800 text-stone-100 dark:bg-stone-100 dark:hover:bg-white dark:text-stone-900 transition-colors disabled:opacity-50"
+            >
+              {isSubmitting ? 'Verifying...' : 'Sign In'}
+            </button>
+          </form>
+        </div>
+
+        <p className="mt-5 text-center text-xs text-stone-500 dark:text-stone-400">
+          Don't have an account?{' '}
+          <Link to="/register" className="font-medium text-stone-900 dark:text-stone-200 hover:underline">
+            Register
+          </Link>
+        </p>
+      </div>
+    </div>
+  );
+}
