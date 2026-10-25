@@ -12,6 +12,7 @@
     **API docs:** [connect-teams-api.onrender.com/docs](https://connect-teams-api.onrender.com/docs)
 
 ### Demo logins
+```
 
 | Role            | Email                   | Password           |  Access     ----------------------------------------------------------------------------------------------------------------------------|
 |System Admin     |`admin@connectteams.com` | `Admin@12345`      | Full workspace creation, channel 
@@ -22,7 +23,7 @@
                                                                                                                             |
 |Team Member      |`alex@connectteams.com`  | `Member@12345`     | Real-time channel messaging, direct messages
                                                                    (DMs), file sharing, and presence indicators                         
-
+```
 ---
 
 ## 1. Problem & Solution
@@ -85,7 +86,7 @@ Monorepo layout     Isolated be/ and fe/ directories           Independent build
     Quality Tooling             Pytest, pytest-asyncio, HTTPX AsyncClient, Mypy, Prettier
 
 ## 5. Project Structure
-
+```
 .
 ├── be/                         # FastAPI backend application
 │   ├── alembic/                # Database schema migrations
@@ -115,7 +116,7 @@ Monorepo layout     Isolated be/ and fe/ directories           Independent build
 ├── docker/                     # Docker auxiliary configurations
 ├── docs/                       # Architectural & API documentation
 └── README.md
-
+```
 
 ## 6. API Overview
 
