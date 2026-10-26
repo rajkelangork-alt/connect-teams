@@ -2,6 +2,7 @@
 
 > Real-time multi-workspace team messaging, channel orchestration, and role-based access control (RBAC) for distributed engineering organizations.
 
+<<<<<<< HEAD
 [![CI](https://github.com/rajkelangork-alt/connect-teams/actions/workflows/ci.yml/badge.svg)](https://github.com/rajkelangork-alt/connect-teams/actions)
 ![Python](https://img.shields.io/badge/python-3.12+-blue)
 ![FastAPI](https://img.shields.io/badge/FastAPI-009688)
@@ -21,10 +22,35 @@
 | Workspace Admin | `lead@connectteams.com`  | `Lead@12345`   | Channel administration, member moderation, and workspace settings (capped at 2 holders)    |
 | Team Member     | `alex@connectteams.com`  | `Member@12345` | Real-time channel messaging, direct messages (DMs), file sharing, and presence indicators  |
 
+=======
+    [![CI](https://github.com/rajkelangork-alt/connect-teams/actions/workflows/ci.yml/badge.svg)](https://github.com/rajkelangork-alt/connect-teams/actions)
+    ![Python](https://img.shields.io/badge/python-3.12+-blue)
+    ![FastAPI](https://img.shields.io/badge/FastAPI-009688)
+    ![React](https://img.shields.io/badge/React-18-61DAFB)
+    ![License](https://img.shields.io/badge/license-MIT-green)
+
+    **Live demo:** [connect-teams-ashen.vercel.app](https://connect-teams-ashen.vercel.app) | 
+    **API docs:** [connect-teams-api.onrender.com/docs](https://connect-teams-api.onrender.com/docs)
+
+### Demo logins
+```
+
+| Role            | Email                   | Password           |  Access     ----------------------------------------------------------------------------------------------------------------------------|
+|System Admin     |`admin@connectteams.com` | `Admin@12345`      | Full workspace creation, channel 
+                                                                   management User provisioning, and RBAC badge assignment  |
+
+|Workspace Admin  |`lead@connectteams.com`  | `Lead@12345`       | Channel administration, member moderation, and           |
+                                                                   workspace settings (capped at 2 holders)    
+                                                                                                                            |
+|Team Member      |`alex@connectteams.com`  | `Member@12345`     | Real-time channel messaging, direct messages
+                                                                   (DMs), file sharing, and presence indicators                         
+```
+>>>>>>> 2b794d3ef9e8ed2f8dd349fa278d231ac1f8d9de
 ---
 
 ## 1. Problem & Solution
 
+<<<<<<< HEAD
 - **Problem:** Distributed engineering teams often rely on fragmented communication tools that lack strict corporate domain boundaries, predictable role hierarchies, or lightweight self-hostable architectures without expensive per-seat enterprise licensing.
 - **Solution:** A full-stack, real-time collaboration platform bounded by `@connectteams.com` corporate isolation, featuring multi-workspace channel streams, direct messaging, WebSocket pub/sub synchronization with automatic local fallback, and tiered role-based access control.
 - **Outcome:** Near-instant message delivery over persistent WebSockets, non-blocking database persistence via asynchronous SQLAlchemy connection pooling, and strict permission enforcement across workspaces and channels.
@@ -82,6 +108,68 @@ flowchart LR
 .
 ├── .github/workflows/          # GitHub Actions CI pipeline
 │   └── ci.yml
+=======
+    - **Problem:** Distributed engineering teams often rely on fragmented communication tools that lack strict corporate domain boundaries, predictable role hierarchies, or lightweight self-hostable architectures without expensive per-seat enterprise licensing.
+    - **Solution:** A full-stack, real-time collaboration platform bounded by `@connectteams.com` corporate isolation, featuring multi-workspace channel streams, direct messaging, WebSocket pub/sub synchronization with automatic local fallback, and tiered role-based access control.
+    - **Outcome:** Instantaneous message delivery over persistent WebSockets, non-blocking database persistence via asynchronous SQLAlchemy connection pooling, and strict permission enforcement across workspaces and channels.
+
+## 2. Key Features
+
+    - **Corporate domain & capacity guardrails:** Enforces `@connectteams.com` email isolation with structured organizational capacity (1 System Admin, up to 7 Member accounts, and a maximum of 2 Workspace Admin badge holders).
+    - **Real-time WebSocket messaging & resilient pub/sub:** Bi-directional WebSocket streams broadcast channel messages, direct messages, typing indicators, and live online presence with automatic fallback from Redis Pub/Sub to local in-memory mode.
+    - **Multi-workspace & channel orchestration:** Seamless switching between isolated workspaces (e.g., *Acme Engineering*, *Product Architecture*) and topic-specific channels (`#general`, `#be-dev-group`, `#fe-dev`, `#dev-ops`).
+    - **Granular RBAC & permission guards:** FastAPI dependency injection (`Depends(get_current_user)`) protects routes, restricts administrative mutations, and enforces workspace-level membership checks.
+    - **Rich media & static file serving:** Built-in upload handling and static asset mounting (`/uploads`) for sharing attachments and image previews directly inside conversation threads.
+
+## 3. Architecture
+
+    ```mermaid
+    flowchart LR
+        Client["React 18 SPA / Vite"] -->|HTTPS / REST| Gateway["FastAPI ASGI Gateway"]
+        Client -->|WSS Stream| WS["WebSocket /ws Router"]
+        Gateway --> Auth["JWT & RBAC Guard"]
+        Auth --> DB[("Supabase PostgreSQL Pooler")]
+        Gateway --> PubSub["Redis / Local PubSub Bridge"]
+        PubSub --> WS
+    ```
+
+## Design decisions
+
+Decision            Choice                                         Why                           Alternative
+Real-time sync      WebSockets + Redis/Local PubSub fallback   Zero-downtime boots even          Polling, Firebase
+                                                               without an external Redis node 
+
+Database driver     PostgreSQL + asyncpg (SQLAlchemy 2.0)      Non-blocking async I/O under      Synchronous psycopg2
+                                                               concurrent chat loads 
+
+Authentication      Stateless JWT (HS256) + OAuth2 Bearer      Scales cleanly across decoupled   Server-side sessions
+                                                               frontend/backend hosts 
+
+Monorepo layout     Isolated be/ and fe/ directories           Independent build pipelines on    Single coupled repo
+                                                               Render and Vercel 
+
+
+## 4. Tech Stack
+
+    Layer                       Technology
+
+    Backend                     Python 3.12+, FastAPI, Uvicorn, Gunicorn, SQLAlchemy 2.0 (Asyncio), 
+                                Pydantic v2, Alembic
+    
+    Data & Caching              PostgreSQL (Supabase IPv4 Session Pooler), 
+                                asyncpg, Redis (with in-memory fallback)
+    
+    Frontend                    React 18, Vite, TypeScript/DevOps & JavaScript, Tailwind            
+                                CSS, Lucide React
+    
+    Devops & Cloud              GitHub, Vercel (Frontend Edge Network),Render(FastAPI Web Service), Docker
+    
+    Quality Tooling             Pytest, pytest-asyncio, HTTPX AsyncClient, Mypy, Prettier
+
+## 5. Project Structure
+```
+.
+>>>>>>> 2b794d3ef9e8ed2f8dd349fa278d231ac1f8d9de
 ├── be/                         # FastAPI backend application
 │   ├── alembic/                # Database schema migrations
 │   ├── app/
@@ -109,6 +197,7 @@ flowchart LR
 │   └── vercel.json             # Vercel SPA routing rewrites
 ├── docker/                     # Docker auxiliary configurations
 ├── docs/                       # Architectural & API documentation
+<<<<<<< HEAD
 ├── .gitignore
 └── README.md
 ```
@@ -220,3 +309,114 @@ Available for freelance projects.
 ## License
 
 This project is licensed under the MIT License.
+=======
+└── README.md
+```
+
+## 6. API Overview
+
+Method           Endpoint                         Description                                Auth
+
+POST             /api/v1/auth/loginAuthenticate   @connectteams.com user and issue           Public
+                                                  an HS256 JWT
+
+GET              /api/v1/workspaces               List workspaces accessible to the          Authenticated
+                                                  authenticated member 
+
+POST             /api/v1/workspaces               Create a new engineering workspace and     System Admin
+                                                  seed default channels
+
+GET             /api/v1/workspaces/{workspace_id} Fetch public and private channels within   Workspace Member
+                /channels                         a workspace
+
+
+POST            /api/v1/workspaces/{workspace_id} Provision a new topic channel inside a     Workspace Admin
+                /channels                         workspace
+
+
+GET             /api/v1/channels/{channel_id}/    Retrieve paginated message history         Workspace Member
+                messages                          (?limit=50&before_id=...)
+
+
+POST            /api/v1/channels/{channel_id}/    Persist a new message to PostgreSQL        Workspace Member
+                messages                          and broadcast via WebSocket
+
+
+DELETE          /api/v1/messages/{message_id}     Soft or hard delete a message by ID        Author / Admin
+                                                  (204 No Content)
+                                                  
+WS              /ws                               Real-time bi-directional messaging,        JWT Scoped
+                                                  typing, and presence stream           
+
+## 7. Getting Started
+Prerequisites: Python 3.12+, Node.js 18+ and npm, and a PostgreSQL database (Supabase project).
+
+    Backend
+
+    cd be
+    python -m venv .venv
+
+    # Windows (PowerShell)
+    .\.venv\Scripts\Activate.ps1
+    # macOS / Linux
+    source .venv/bin/activate
+
+    pip install -r requirements.txt
+    cp .env.example .env     
+    
+    # configure DATABASE_URL (postgresql+asyncpg://...) and JWT_SECRET_KEY
+    uvicorn app.main:app --reload --port 8000
+
+    Frontend
+
+    cd fe
+    cp .env.example .env     # set VITE_API_URL=http://localhost:8000/api/v1
+    npm install
+    npm run dev
+
+## 8. Testing & Quality
+
+    cd be
+    pytest tests/ -v
+
+## 9. Security
+    Password hashing: Salted bcrypt password hashes via passlib; plain-text credentials are never stored or logged.
+
+    Strict CORS policy: Explicitly scoped to trusted origins (https://connect-teams-ashen.vercel.app) and local development ports.
+
+    Schema validation & sanitization: Pydantic v2 models validate incoming payloads and strip password hashes from serialized API responses.
+
+    Repository hygiene: Comprehensive .gitignore rules exclude all .env files across be/ and fe/ while tracking clean .env.example templates.
+
+## 10. Performance & Scalability
+
+    Asynchronous ORM pipeline: SQLAlchemy 2.0 AsyncSession paired with asyncpg and Supabase IPv4 connection pooling prevents thread blocking during concurrent chat spikes.
+
+    Graceful pub/sub degradation: Automatically detects Redis availability on startup and falls back to an in-memory event bridge (local mode) so single-instance cloud deployments run with zero external cache dependencies.
+
+    Lightweight frontend bundle: Vite ESBuild bundling with tree-shakable lucide-react SVG icons and atomic Tailwind CSS utilities.
+
+## 11. Deployment
+
+    Frontend: Hosted on Vercel (connect-teams-ashen.vercel.app) with fe root directory isolation, automatic Vite preset builds, and vercel.json SPA routing rewrites.
+
+    Backend: Hosted on Render (connect-teams-api.onrender.com) as a containerized Python web service executing uvicorn app.main:app --host 0.0.0.0 --port $PORT.
+
+    Database: Hosted on Supabase PostgreSQL utilizing the aws-0-ap-northeast-1 IPv4 connection pooler over port 5432.
+
+## 12. What I Learned / Trade-offs
+
+    Async driver URI strictness: Deploying SQLAlchemy's async engine to Render required explicitly enforcing the postgresql+asyncpg:// protocol prefix and URL-encoding special password characters when rotating Supabase pooler credentials.
+
+    Redis vs. In-Memory fallback: On free-tier cloud hosting without a managed Redis instance, building a resilient pub/sub bridge allowed the FastAPI server to log a non-fatal warning and fall back to local memory without crashing the worker process.
+
+    Ephemeral filesystem uploads: User uploads currently mount to Render's local /uploads directory. In a multi-instance production cluster, I would migrate file attachments to an S3-compatible object store (such as Supabase Storage or AWS S3).
+
+## 13. Author
+
+    Product Full Stack Developer | Python/FastAPI, React/Next.js, TypeScript
+
+    GitHub: @rajkelangork-alt | Live platform: connect-teams-ashen.vercel.app
+
+    Available for freelance projects.
+>>>>>>> 2b794d3ef9e8ed2f8dd349fa278d231ac1f8d9de
